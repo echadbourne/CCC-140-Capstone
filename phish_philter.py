@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import openpyxl #necessary for Excel file handling
 import os #used to check file extensions
 import pandas as pd # used for reading data files
 
