@@ -11,15 +11,14 @@ phish_philter.py
 
 __version__ = "0.1.0"
 file_path = 'PhishPhilterTest.csv'
-test_word = 'Fig'
-# Filter Email Entries (csv) for Phishing Indicators
-def is_phish(data, word):
-    #filtered_data = data[data['Fruit'] == word]
-    in_chunk = pd.concat([chunk[chunk['Fruit'] == word] for chunk in data])
+test_bank = ['Apple', 'Fig', 'Guava']
+# Checks all the chunks of the Data file for any words in a given word bank and returns the entry
+def check_chunk(data, bank):
+    in_chunk = pd.concat([chunk[chunk['Fruit'].isin(bank)] for chunk in data])
     return in_chunk
 # Export filtered entries to new csv
-def export_phish():
-    pass
+def export_phish(df):
+    df.to_csv('test.csv')
 # Print summary statistics
 def print_summary():
     pass
@@ -36,9 +35,10 @@ def get_file(file_path):
 def check_extention(expected_extension):
     file_extension = os.path.splitext(file_path)
     return file_extension[1] == expected_extension
+# Checks all the different Phishing Wordbanks and creates entries for the 
 def main():
     entry = get_file("PhishPhilterTest.csv")
-    print(is_phish(entry,test_word))
+    export_phish(check_chunk(entry,test_bank))
 
 if __name__ == "__main__":
     main()
