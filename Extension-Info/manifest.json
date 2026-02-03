@@ -1,0 +1,13 @@
+{
+    "name": "PhishPhilter",
+    "description": "Filtering script to detect malicious emails",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": ["activeTab", "scripting"],
+    "action": {
+        "menu": "menu.html"
+    },
+    "background": {
+        "service_worker": "scripts/background.js"
+    }
+}
