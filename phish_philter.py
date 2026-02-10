@@ -35,7 +35,15 @@ def export_phish(df):
     df.to_csv(filename+'.csv')
 # Print summary statistics
 def print_summary():
-    pass
+    total = 0
+    for bank in wordbanks.values():
+        print("Number of hits in " + bank["name"] + ": " + str(bank["counter"]))
+        total += bank["counter"]
+    print("Total hits across all wordbanks: " + str(total))
+    for bank in wordbanks.values():
+        percentage = (bank["counter"] / total) * 100 if total > 0 else 0
+        print(f"Percentage of hits in {bank['name']}: {percentage:.2f}%")
+
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
 def get_file(file_path):
     if check_extention('.csv'):
@@ -63,10 +71,9 @@ def is_phish(file_path):
         print ("Checking the " + bank["name"] + " wordbank...")
         filtered = check_chunk(table, bank["words"])
         bank["counter"] = len(filtered)
-        print(bank["counter"])
+        print("Number of hits in " + bank["name"] + ": " + str(bank["counter"]))
         export_phish(filtered)
         counter += 1
-    
 def main():
     is_phish("PhishPhilterTest.csv")
     #print(check_chunk(get_file("PhishPhilterTest.csv"), test_bank))
