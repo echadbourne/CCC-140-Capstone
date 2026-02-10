@@ -9,7 +9,6 @@ phish_philter.py
 """
 
 __version__ = "0.1.0"
-file_path = 'PhishPhilterTest.csv'
 
 test_bank = ['Apple', 'Fig', 'Guava']
 test_bank2 = ['Cherry', 'Date']
@@ -46,13 +45,14 @@ def print_summary():
 
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
 def get_file(file_path):
-    if check_extention('.csv'):
+    if check_extention(file_path,'.csv'):
         phishData = pd.read_csv(file_path, iterator=True, chunksize=10000)
     else:
-        print(f"Invalid file extension.")
+        print("Unsupported file type. Please provide a .csv file.")
+        exit()
     return phishData
 # Check file extension of input file
-def check_extention(expected_extension):
+def check_extention(file_path, expected_extension):
     file_extension = os.path.splitext(file_path)
     return file_extension[1] == expected_extension
 
@@ -74,8 +74,8 @@ def is_phish(file_path):
         print("Number of hits in " + bank["name"] + ": " + str(bank["counter"]))
         export_phish(filtered)
         counter += 1
+        print_summary()
 def main():
     is_phish("PhishPhilterTest.csv")
-    #print(check_chunk(get_file("PhishPhilterTest.csv"), test_bank))
 if __name__ == "__main__":
     main()
