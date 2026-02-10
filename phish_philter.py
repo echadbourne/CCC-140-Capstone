@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import openpyxl #necessary for Excel file handling
 import os #used to check file extensions
 import pandas as pd # used for reading data files
 
@@ -23,8 +22,11 @@ wordbanks = {
 
 }
 
+
 # Checks all the chunks of the Data file for any words in a given word bank and returns the entry
 def check_chunk(data, bank):
+    #for chunk in data:
+    #   in_chunk = chunk[chunk['Fruit'].isin(bank)]
     in_chunk = pd.concat([chunk[chunk['Fruit'].isin(bank)] for chunk in data])
     return in_chunk
 # Export filtered entries to new csv
@@ -37,7 +39,7 @@ def print_summary():
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
 def get_file(file_path):
     if check_extention('.csv'):
-        phishData = pd.read_csv(file_path, iterator=True, chunksize=1000)
+        phishData = pd.read_csv(file_path, iterator=True, chunksize=10000)
     else:
         print(f"Invalid file extension.")
     return phishData
@@ -45,23 +47,28 @@ def get_file(file_path):
 def check_extention(expected_extension):
     file_extension = os.path.splitext(file_path)
     return file_extension[1] == expected_extension
+
+def check_html():
+    pass
 # Checks all the different Phishing Wordbanks and creates entries for the 
-def is_phish(entry):
+def is_phish(file_path):
     # Reset counts
     # Run the csv file through each wordbank, count the number of hits per bank
     # Export the results of each databank into separate files
     # Print Summary of the results
+    counter = 0
     for bank in wordbanks.values():
+        table = get_file(file_path)
         bank["counter"] = 0
         print ("Checking the " + bank["name"] + " wordbank...")
-        filtered = check_chunk(entry, bank["words"])
+        filtered = check_chunk(table, bank["words"])
         bank["counter"] = len(filtered)
         print(bank["counter"])
         export_phish(filtered)
+        counter += 1
     
 def main():
-    table = get_file("PhishPhilterTest.csv")
-    is_phish(table)
-
+    is_phish("PhishPhilterTest.csv")
+    #print(check_chunk(get_file("PhishPhilterTest.csv"), test_bank))
 if __name__ == "__main__":
     main()
