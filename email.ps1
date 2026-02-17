@@ -20,3 +20,5 @@ if (!$pop3Client.connected){
 }
 
 $pop3Client.authenticate($username, $password)
+
+#$pop3Client.disconnect()
