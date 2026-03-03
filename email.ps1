@@ -54,10 +54,10 @@ function Test_Email () {
 
 function Get_Email (){
     $message_num = $pop3Client.GetMessageCount()
+    $list = @()
     for ($i = 1; $i -le $message_num; $i++) {
         # Change this to the max amount on each email page later
         $message = $pop3Client.getMessage($i)
-
         $text = $message.FindAllTextVersions()
         if ($text){
             $message_body = $text[0].GetBodyAsText()
@@ -75,12 +75,17 @@ function Get_Email (){
             Date = $message.Headers.Date
             Body = $message_body
         }
-
+        
+        $list += $emailContents
+        <#
         Write-Host $emailContents.Subject
         Write-Host $emailContents.Sender
         Write-Host $emailContents.Date
         Write-Host $emailContents.Body
+        #>
     }
+
+    return $list
 
 }
 
