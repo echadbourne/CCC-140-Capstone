@@ -91,5 +91,7 @@ function Get_Email (){
 
 Get_Email
 
+Get_Email | export-csv -path "emails.csv"
+
 # Ends Session
 $pop3Client.Dispose()
