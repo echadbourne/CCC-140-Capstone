@@ -8,10 +8,9 @@ $pop3Client = New-Object OpenPop.Pop3.pop3Client
 $server = "pop.gmail.com"
 $port = 995
 $enableSSL = $true
-$username = "phishphilteralice@gmail.com"
-$password = Get-Content "C:\Users\champuser\Desktop\AppPassword.txt" | ConvertTo-SecureString
-
-#open the port for the server
+$username = "recent:phishphilteralice@gmail.com"
+$secure = Get-Content "C:\Users\champuser\Desktop\AppPassword.txt" | ConvertTo-SecureString
+$password = ConvertFrom-SecureString -SecureString $secure -AsPlainText
 
 # Connect to the server
 $pop3Client.connect($server, $port, $enableSSL)
@@ -25,6 +24,7 @@ $pop3Client.authenticate($username, $password)
 #Do things here
 # Gets the total number of emails on the client
 $message_num = $pop3Client.GetMessageCount()
+Write-Host($message_num)
 # Gets the most recent email
 $message = $pop3Client.getMessage($message_num)
 # Gets Header Information from Email
@@ -34,13 +34,13 @@ Write-Host "Date: $($message.Headers.Date)"
 # Gets body of the email, tries plaintext first before falling back on html
 $message_body = $null
 $text = $message.FindAllTextVersions()
-if ($text -gt 0){
+if ($text){
     $message_body = $text[0].GetBodyAsText()
 
 }
 else {
     $html = $message.FindFirstHtmlVersion()
-    if ($html -ne $null ){
+    if ($html){
         $message_body = $html.GetBodyAsText()
     }
 }
