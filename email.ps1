@@ -54,8 +54,8 @@ function Test_Email () {
 
 function Get_Email (){
     $message_num = $pop3Client.GetMessageCount()
-    foreach ($number in $message_num) {
-        $message = $pop3Client.getMessage($number)
+    for ($i = 1; $i -le $message_num; $i++) {
+        $message = $pop3Client.getMessage($i)
 
         $text = $message.FindAllTextVersions()
         if ($text){
