@@ -4,6 +4,7 @@ Add-Type -Path $OpenPopPath
 $pop3Client = New-Object OpenPop.Pop3.pop3Client
 
 # Variables for setting up the pop3 server
+
 # Maybe put this in a config file? Make a setup readme
 
 $server = "pop.gmail.com"
@@ -26,6 +27,10 @@ Connect_Server
 # Do things here
 
 function Test_Email () {
+    <#
+    Use this function for testing, it should export and show the contents of the most recent email
+    #>
+
     # Gets the total number of emails on the client
     $message_num = $pop3Client.GetMessageCount()
     Write-Host($message_num)
@@ -52,13 +57,16 @@ function Test_Email () {
     Write-Host $message_body
 }
 
+#Test_Email
+
 function Get_Email (){
     $message_num = $pop3Client.GetMessageCount()
-    $list = @()
+    $message_list = @() # Adds contents of each email to this list
     for ($i = 1; $i -le $message_num; $i++) {
         # Change this to the max amount on each email page later
         $message = $pop3Client.getMessage($i)
         $text = $message.FindAllTextVersions()
+        # Check for html or plaintext
         if ($text){
             $message_body = $text[0].GetBodyAsText()
         }
@@ -69,28 +77,25 @@ function Get_Email (){
             }
         }
 
-        $emailContents = [pscustomobject]@{
+        $emailContents = [pscustomobject]@{ # Stores the contents in a pscustomobject, to be added to list
             Subject = $message.Headers.Subject
             Sender = $message.Headers.From.Address
             Date = $message.Headers.Date
             Body = $message_body
         }
         
-        $list += $emailContents
-        <#
-        Write-Host $emailContents.Subject
-        Write-Host $emailContents.Sender
-        Write-Host $emailContents.Date
-        Write-Host $emailContents.Body
-        #>
+        $message_list += $emailContents # Add contents to list
     }
 
-    return $list
+    return $message_list
 
 }
 
-Get_Email
+# Uncomment this to print all of the emails the function gets
+#Get_Email
 
+
+# Export output of get email to csv for reading by phishphilter
 Get_Email | export-csv -path "emails.csv"
 
 # Ends Session
