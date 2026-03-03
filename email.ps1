@@ -54,30 +54,32 @@ function Test_Email () {
 
 function Get_Email (){
     $message_num = $pop3Client.GetMessageCount()
-    $message = $pop3Client.getMessage($message_num)
+    foreach ($number in $message_num) {
+        $message = $pop3Client.getMessage($number)
 
-    $text = $message.FindAllTextVersions()
-    if ($text){
-        $message_body = $text[0].GetBodyAsText()
-    }
-    else {
-        $html = $message.FindFirstHtmlVersion()
-        if($html){
-            $message_body = $html.GetBodyAsText()
+        $text = $message.FindAllTextVersions()
+        if ($text){
+            $message_body = $text[0].GetBodyAsText()
         }
-    }
+        else {
+            $html = $message.FindFirstHtmlVersion()
+            if($html){
+                $message_body = $html.GetBodyAsText()
+            }
+        }
 
-    $emailContents = [pscustomobject]@{
-        Subject = $message.Headers.Subject
-        Sender = $message.Headers.From.Address
-        Date = $message.Headers.Date
-        Body = $message_body
-    }
+        $emailContents = [pscustomobject]@{
+            Subject = $message.Headers.Subject
+            Sender = $message.Headers.From.Address
+            Date = $message.Headers.Date
+            Body = $message_body
+        }
 
-    Write-Host $emailContents.Subject
-    Write-Host $emailContents.Sender
-    Write-Host $emailContents.Date
-    Write-Host $emailContents.Body
+        Write-Host $emailContents.Subject
+        Write-Host $emailContents.Sender
+        Write-Host $emailContents.Date
+        Write-Host $emailContents.Body
+    }
 
 }
 
