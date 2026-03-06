@@ -21,14 +21,16 @@ wordbanks = {
     'test_bank3': {"name": "test_bank3", "counter": 0, "words": test_bank3}
 
 }
-
+labels = ['Fruit','From', 'To', 'Subject', 'Body']
 
 # Checks all the chunks of the Data file for any words in a given word bank and returns the entry
-def check_chunk(data, bank):
-    #for chunk in data:
-    #   in_chunk = chunk[chunk['Fruit'].isin(bank)]
-    in_chunk = pd.concat([chunk[chunk['Fruit'].isin(bank)] for chunk in data])
-    return in_chunk
+def check_chunk(data, bank, label):
+    if label in data.get_chunk(0).columns:
+        in_chunk = pd.concat([chunk[chunk[label].isin(bank)] for chunk in data])
+        return in_chunk
+    else:
+        print(f"Label '{label}' not found in the data. Skipping this label...")
+    
 # Export filtered entries to new csv
 def export_phish(df):
     filename = input("Please enter the name for the new file: ")
@@ -57,8 +59,7 @@ def check_extention(file_path, expected_extension):
     file_extension = os.path.splitext(file_path)
     return file_extension[1] == expected_extension
 
-def check_html():
-    pass
+
 # Checks all the different Phishing Wordbanks and creates entries for the 
 def is_phish(file_path):
     # Reset counts
@@ -67,16 +68,23 @@ def is_phish(file_path):
     # Print Summary of the results
     counter = 0
     for bank in wordbanks.values():
-        table = get_file(file_path)
+        temp = []
+        hold = None
         bank["counter"] = 0
         print ("Checking the " + bank["name"] + " wordbank...")
-        filtered = check_chunk(table, bank["words"])
+        for label in labels:
+            table = get_file(file_path)
+            hold = check_chunk(table, bank["words"], label)
+            if hold is not None:
+                temp.append(hold)
+        filtered = pd.concat(temp)
         bank["counter"] = len(filtered)
         print("Number of hits in " + bank["name"] + ": " + str(bank["counter"]))
         export_phish(filtered)
         counter += 1
-        print_summary()
+    print_summary()
 
 
 if __name__ == "__main__":
-    is_phish(sys.argv[1]) # Run check against whatever is after it
+    is_phish("python\PhishPhilterTest.csv")
+    #is_phish(sys.argv[1]) # Run check against whatever is after it
