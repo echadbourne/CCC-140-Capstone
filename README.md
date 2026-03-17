@@ -14,6 +14,6 @@ For full documentation on the research and development of PhishPhilter, check th
 
 ## Using PhishPhilter
 
-To use PhishPhilter, start by installing the [[Dependencies]], then [Load it as an Unpacked Extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+To use PhishPhilter, start by installing the [Dependencies](https://github.com/echadbourne/CCC-140-Capstone/wiki/Dependencies), then [Load it as an Unpacked Extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 More instructions to come
