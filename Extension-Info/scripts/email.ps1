@@ -101,5 +101,5 @@ Get_Email | export-csv -path "emails.csv"
 # Ends Session
 $pop3Client.Dispose()
 
-& python3.exe ".\python\phish_philter.py" ".\emails.csv" 
+& python  ".\python\phish_philter.py" ".\emails.csv" 
 
