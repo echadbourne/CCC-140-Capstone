@@ -11,22 +11,23 @@ phish_philter.py
 
 __version__ = "0.1.0"
 
-test_bank = ['Apple', 'Fig', 'Guava']
-test_bank2 = ['Cherry', 'Date']
-test_bank3 = ['Pear', 'Orange']
+#test_bank = ['Apple', 'Fig', 'Guava']
+#test_bank2 = ['Cherry', 'Date']
+#test_bank3 = ['Pear', 'Orange']
+email_bank = ['evil', 'dog', 'cute', 'report']
 # Dictionary of different wordbanks to check against
 wordbanks = { 
-    'test_bank': {"name": "test_bank", "counter": 0, "words": test_bank},
-    'test_bank2': {"name": "test_bank2", "counter": 0, "words": test_bank2},
-    'test_bank3': {"name": "test_bank3", "counter": 0, "words": test_bank3}
-
+ #   'test_bank': {"name": "test_bank", "counter": 0, "words": test_bank},
+ #   'test_bank2': {"name": "test_bank2", "counter": 0, "words": test_bank2},
+ #   'test_bank3': {"name": "test_bank3", "counter": 0, "words": test_bank3},
+    'email_bank': {"name": "email_bank", "counter": 0, "words": email_bank}
 }
-labels = ['Fruit','From', 'To', 'Subject', 'Body']
+labels = ['Subject', 'Sender', 'Date', 'Body', 'From', 'To', 'Fruit']
 
 # Checks all the chunks of the Data file for any words in a given word bank and returns the entry
 def check_chunk(data, bank, label):
-    if label in data.get_chunk(0).columns:
-        in_chunk = pd.concat([chunk[chunk[label].isin(bank)] for chunk in data])
+    if label in data.get_chunk(0).columns.tolist():
+        in_chunk = pd.concat([chunk[chunk[label].str.contains('|'.join(bank))] for chunk in data])
         return in_chunk
     else:
         print(f"Label '{label}' not found in the data. Skipping this label...")
@@ -86,5 +87,6 @@ def is_phish(file_path):
 
 
 if __name__ == "__main__":
-    is_phish("python\PhishPhilterTest.csv")
-    #is_phish(sys.argv[1]) # Run check against whatever is after it
+    #is_phish("python\\emails.csv") # Run check against the test file
+    #is_phish("python\\PhishPhilterTest.csv")
+    is_phish(sys.argv[1]) # Run check against whatever is after it
