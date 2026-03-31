@@ -4,10 +4,10 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-const gmail = 'https://mail.google.com/*';
+const gmail = 'https://mail.google.com/';
 
 chrome.action.onClicked.addListener(async (tab) => {
-  if (tab.url.startsWith("mail.google")) {
+  if (tab.url.startsWith(gmail)) {
     // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
     const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
     // Next state will always be the opposite
