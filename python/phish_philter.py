@@ -2,6 +2,8 @@
 import os #used to check file extensions
 import pandas as pd # used for reading data files
 import sys
+import requests
+import json
 
 """
 phish_philter.py
@@ -33,9 +35,13 @@ def check_chunk(data, bank, label):
         print(f"Label '{label}' not found in the data. Skipping this label...")
     
 # Export filtered entries to new csv
-def export_phish(df):
+def export_phish_csv(df):
     filename = input("Please enter the name for the new file: ")
     df.to_csv(filename+'.csv')
+def export_phish_db(df):
+    result = df.to_json()
+    response = requests.post("http://localhost:5984/PhishPhilterDB", json=result)
+    print(response.json())
 # Print summary statistics
 def print_summary():
     total = 0
@@ -79,11 +85,12 @@ def is_phish(file_path):
             if hold is not None:
                 temp.append(hold)
         filtered = pd.concat(temp)
+        print(filtered)
         bank["counter"] = len(filtered)
         print("Number of hits in " + bank["name"] + ": " + str(bank["counter"]))
-        export_phish(filtered)
+        export_phish_db(filtered)
         counter += 1
-    print_summary()
+    #print_summary()
 
 
 if __name__ == "__main__":
