@@ -3,7 +3,7 @@
     "description": "Filtering script to detect malicious emails",
     "version": "1.0",
     "manifest_version": 3,
-    "permissions": ["storage", "scripting"],
+    "permissions": ["storage", "scripting","activeTab"],
     "action": {
         "menu": "menu.html"
     },
