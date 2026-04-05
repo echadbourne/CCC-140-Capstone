@@ -8,7 +8,7 @@ It uses a Javascript based extension, a Powershell script for the email connecti
 
 A diagram of how PhishPhilter works can be found below:
 
-<img width="631" height="471" alt="PhishPhilterFlow drawio" src="https://github.com/user-attachments/assets/de4d4d04-3941-46f5-95c4-0c16330abafe" />
+<img width="631" height="471" alt="PhishPhilterFlow (1)" src="https://github.com/user-attachments/assets/b03e72c4-b003-4d15-ba99-bb187ecb10fd" />
 
 For full documentation on the research and development of PhishPhilter, check the [wiki](https://github.com/echadbourne/CCC-140-Capstone/wiki)
 
