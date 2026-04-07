@@ -19,18 +19,27 @@ chrome.action.onClicked.addListener(async (tab) => {
       text: nextState,
     });
 
+    var yourEmailElements=document.getElementsByClassName("zA yO"); //eQXFj_IXXK
+
     if (nextState === "ON") {
       // Insert the CSS file when the user turns the extension on
-      await chrome.scripting.insertCSS({
-        files: ["highlight.css"],
-        target: { tabId: tab.id },
-      });
+      for(i = 0; i<yourEmailElements.length; i++){   
+      if( yourEmailElements[i].innerText == "IT" ){
+          yourEmailElements[i].style.backgroundcolor = "red"; 
+       }
+}
+      //await chrome.scripting.insertJS({
+       // files: ["highlight.js"],
+       //target: { tabId: tab.id },
+      //});
     } else if (nextState === "OFF") {
       // Remove the CSS file when the user turns the extension off
-      await chrome.scripting.removeCSS({
-        files: ["highlight.css"],
-        target: { tabId: tab.id },
-      });
+        yourEmailElements.style.backgroundcolor = ""; 
+       
+}
+      //await chrome.scripting.removeJS({
+        //files: ["highlight.js"],
+        //target: { tabId: tab.id },
+      //});
     }
-  }
 });
