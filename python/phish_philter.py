@@ -16,15 +16,14 @@ __version__ = "0.1.0"
 #test_bank = ['Apple', 'Fig', 'Guava']
 #test_bank2 = ['Cherry', 'Date']
 #test_bank3 = ['Pear', 'Orange']
-email_bank = ['evil', 'dog', 'cute', 'report']
+
 # Dictionary of different wordbanks to check against
 wordbanks = { 
  #   'test_bank': {"name": "test_bank", "counter": 0, "words": test_bank},
  #   'test_bank2': {"name": "test_bank2", "counter": 0, "words": test_bank2},
  #   'test_bank3': {"name": "test_bank3", "counter": 0, "words": test_bank3},
-    'email_bank': {"name": "email_bank", "counter": 0, "words": email_bank}
 }
-labels = ['Subject', 'Sender', 'Date', 'Body', 'From', 'To', 'Fruit']
+labels = []
 
 # Checks all the chunks of the Data file for any words in a given word bank and returns the entry
 def check_chunk(data, bank, label):
@@ -38,6 +37,7 @@ def check_chunk(data, bank, label):
 def export_phish_csv(df):
     filename = input("Please enter the name for the new file: ")
     df.to_csv(filename+'.csv')
+# Export filtered entries to local CouchDB database
 def export_phish_db(df):
     result = df.to_json()
     response = requests.post("http://localhost:5984/PhishPhilterDB", json=result)
@@ -52,7 +52,34 @@ def print_summary():
     for bank in wordbanks.values():
         percentage = (bank["counter"] / total) * 100 if total > 0 else 0
         print(f"Percentage of hits in {bank['name']}: {percentage:.2f}%")
-
+# Prints PhishPhilter Version
+def print_version():
+    print(f"Phish Philter Version: {__version__}")
+# Imports a wordbank from a .txt file and adds it to the wordbanks dictionary
+def import_wordbank(file_path):
+    if check_extention(file_path, '.txt'):
+        with open(file_path, 'r') as file:
+            for line in file:
+                words = line.strip().split(',')
+        for word in words:
+            wordbanks[file_path] = {"name": file_path, "counter": 0, "words": words}
+        return wordbanks[file_path]
+# Imports wordbanks from a .json file and adds them to the wordbanks dictionary
+def import_wordbank_json():
+    with open('python\wordbanks.json', 'r') as file:
+        wordbanks = json.load(file)
+# Exports wordbanks to a .json file
+def export_wordbank_json():
+    with open('python\wordbanks.json', 'w') as file:
+        json.dump(wordbanks, file)
+# Imports labels from a .json file
+def import_labels_json():
+    with open('python\labels.json', 'r') as file:
+        labels = json.load(file)
+# Exports labels to a .json file
+def export_labels_json():
+    with open('python\labels.json', 'w') as file:
+        json.dump(labels, file)
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
 def get_file(file_path):
     if check_extention(file_path,'.csv'):
@@ -96,4 +123,6 @@ def is_phish(file_path):
 if __name__ == "__main__":
     #is_phish("python\\emails.csv") # Run check against the test file
     #is_phish("python\\PhishPhilterTest.csv")
+    import_wordbank_json() # Import wordbanks from json file
+    import_labels_json() # Import labels from json file
     is_phish(sys.argv[1]) # Run check against whatever is after it
