@@ -63,7 +63,7 @@ def import_wordbank(file_path):
                 words = line.strip().split(',')
         for word in words:
             wordbanks[file_path] = {"name": file_path, "counter": 0, "words": words}
-        return wordbanks[file_path]
+        export_wordbank_json()
 # Imports wordbanks from a .json file and adds them to the wordbanks dictionary
 def import_wordbank_json():
     with open('python\wordbanks.json', 'r') as file:
