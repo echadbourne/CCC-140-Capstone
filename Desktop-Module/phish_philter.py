@@ -70,22 +70,22 @@ def import_wordbank(file_path):
 # Imports wordbanks from a .json file and adds them to the wordbanks dictionary
 def import_wordbank_json():
     global wordbanks
-    with open('python\wordbanks.json', 'r') as file:
+    with open('Desktop-Module\wordbanks.json', 'r') as file:
         wordbanks = json.load(file)
 # Exports wordbanks to a .json file
 def export_wordbank_json():
     global wordbanks
-    with open('python\wordbanks.json', 'w') as file:
+    with open('Desktop-Module\wordbanks.json', 'w') as file:
         json.dump(wordbanks, file)
 # Imports labels from a .json file
 def import_labels_json():
     global labels
-    with open('python\labels.json', 'r') as file:
+    with open('Desktop-Module\labels.json', 'r') as file:
         labels = json.load(file)
 # Exports labels to a .json file
 def export_labels_json():
     global labels
-    with open('python\labels.json', 'w') as file:
+    with open('Desktop-Module\labels.json', 'w') as file:
         json.dump(labels, file)
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
 def get_file(file_path):
@@ -130,8 +130,8 @@ def is_phish(file_path):
 
 
 if __name__ == "__main__":
-    #is_phish("python\\emails.csv") # Run check against the test file
-    #is_phish("python\\PhishPhilterTest.csv")
+    #is_phish("Desktop-Module\\emails.csv") # Run check against the test file
+    #is_phish("Desktop-Module\\PhishPhilterTest.csv")
     import_wordbank_json() # Import wordbanks from json file
     import_labels_json() # Import labels from json file
     is_phish(sys.argv[1]) # Run check against whatever is after it
