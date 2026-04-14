@@ -23,7 +23,7 @@ function Connect_Server () {
     $pop3Client.authenticate($username, $password)
 }
 
-Connect_Server
+
 # Do things here
 
 function Test_Email () {
@@ -91,6 +91,7 @@ function Get_Email (){
 
 }
 
+Connect_Server
 # Uncomment this to print all of the emails the function gets
 #Get_Email
 
@@ -101,5 +102,5 @@ Get_Email | export-csv -path "emails.csv"
 # Ends Session
 $pop3Client.Dispose()
 
-& python  ".\python\phish_philter.py" ".\emails.csv" 
+ & python  ".\python\phish_philter.py" ".\emails.csv" 
 

@@ -39,8 +39,10 @@ def export_phish_csv(df):
     df.to_csv(filename+'.csv')
 # Export filtered entries to local CouchDB database
 def export_phish_db(df):
-    result = df.to_json()
-    response = requests.post("http://localhost:5984/PhishPhilterDB", json=result)
+    df = df.drop_duplicates()
+    result = df.reset_index().to_json(force_ascii=False)
+    print(result)
+    response = requests.post("http://phish:philter@localhost:5984/phishphilter", data=result.encode('utf-8'), headers={'Content-Type': 'application/json'})
     print(response.json())
 # Print summary statistics
 def print_summary():
@@ -57,6 +59,7 @@ def print_version():
     print(f"Phish Philter Version: {__version__}")
 # Imports a wordbank from a .txt file and adds it to the wordbanks dictionary
 def import_wordbank(file_path):
+    global wordbanks
     if check_extention(file_path, '.txt'):
         with open(file_path, 'r') as file:
             for line in file:
@@ -66,18 +69,22 @@ def import_wordbank(file_path):
         export_wordbank_json()
 # Imports wordbanks from a .json file and adds them to the wordbanks dictionary
 def import_wordbank_json():
+    global wordbanks
     with open('python\wordbanks.json', 'r') as file:
         wordbanks = json.load(file)
 # Exports wordbanks to a .json file
 def export_wordbank_json():
+    global wordbanks
     with open('python\wordbanks.json', 'w') as file:
         json.dump(wordbanks, file)
 # Imports labels from a .json file
 def import_labels_json():
+    global labels
     with open('python\labels.json', 'r') as file:
         labels = json.load(file)
 # Exports labels to a .json file
 def export_labels_json():
+    global labels
     with open('python\labels.json', 'w') as file:
         json.dump(labels, file)
 # Uses Pandas to read and objectify given datafile - COMPLETE (MIGHT EXPAND FILE TYPES LATER)
@@ -101,6 +108,8 @@ def is_phish(file_path):
     # Export the results of each databank into separate files
     # Print Summary of the results
     counter = 0
+    global labels
+    global wordbanks
     for bank in wordbanks.values():
         temp = []
         hold = None
