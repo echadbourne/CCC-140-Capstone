@@ -4,6 +4,10 @@
     "version": "1.0",
     "manifest_version": 3,
     "permissions": ["storage", "scripting","activeTab"],
+    "host_permissions": [
+        "http://localhost:5984/*",
+        "https://google.com/*"
+    ],
     "action": {
         "default_popup": "popup.html"
     }
