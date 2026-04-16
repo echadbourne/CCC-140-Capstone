@@ -1,1 +1,5 @@
-{"email_bank": {"name": "email_bank", "counter": 0, "words": ["Evil", "dog", "cute", "Reports"]}}
+{"email_bank": {"name": "email_bank", "counter": 0, "words": ["URGENT", "click this link", "pay via credit card", "pay via bitcoin"]},
+"business_bank": {"name": "business_bank", "counter": 0, "words": ["Unusual Login Attempt from", "From the CEO", "Audit of unpaid balances", "payment failure", "immediate termination", "immediately terminated"]},
+"education_bank": {"name": "education_bank", "counter": 0, "words": ["Overdue Tuition", "Tuition Refund Status", "Mandatory Title IX Training", "Debt Relief Application", "immediate suspension", "immediately suspended"]},
+"medical_bank": {"name": "medical_bank", "counter": 0, "words": ["Vaccine Compliance", "record was rejected", "missing a mandatory vaccine", "missing a mandatory record", "Mandatory HIPAA training", "Denial of payment notice", "Medical reimbursement status"]}
+}
