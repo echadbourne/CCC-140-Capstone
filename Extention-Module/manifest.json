@@ -4,6 +4,9 @@
     "version": "1.0",
     "manifest_version": 3,
     "permissions": ["storage", "scripting","activeTab"],
+    "icons": {
+        "360": "icons/phish05.png"
+    },
     "host_permissions": [
         "http://localhost:5984/*",
         "https://google.com/*"
